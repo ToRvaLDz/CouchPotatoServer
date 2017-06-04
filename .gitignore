@@ -10,7 +10,7 @@
 .coverage
 coverage.xml
 nosetests.xml
-
+.DS_Store
 # Visual Studio
 
 /.vs
