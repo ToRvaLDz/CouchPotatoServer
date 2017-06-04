@@ -28,8 +28,8 @@ class TheMovieDb(MovieProvider):
     ak = ['ZjdmNTE3NzU4NzdlMGJiNjcwMzUyMDk1MmIzYzc4NDA=', 'ZTIyNGZlNGYzZmVjNWY3YjU1NzA2NDFmN2NkM2RmM2E=',
           'YTNkYzExMWU2NjEwNWY2Mzg3ZTk5MzkzODEzYWU0ZDU=', 'ZjZiZDY4N2ZmYTYzY2QyODJiNmZmMmM2ODc3ZjI2Njk=']
 
-    languages = [ 'en' ]
-    default_language = 'en'
+    languages = [ 'it' ]
+    default_language = 'it'
 
     def __init__(self):
         addEvent('info.search', self.search, priority = 3)
@@ -77,6 +77,7 @@ class TheMovieDb(MovieProvider):
             raw = self.request('search/movie', {
                 'query': name_year.get('name', q),
                 'year': name_year.get('year'),
+                'language': self.default_language,
                 'search_type': 'ngram' if limit > 1 else 'phrase'
             }, return_key = 'results')
         except:
@@ -121,7 +122,7 @@ class TheMovieDb(MovieProvider):
         # Do request, append other items
         movie = self.request('movie/%s' % movie.get('id'), {
             'append_to_response': 'alternative_titles' + (',images,casts' if extended else ''),
-            'language': 'en'
+            'language': self.default_language
         })
         if not movie:
             return
@@ -264,11 +265,12 @@ class TheMovieDb(MovieProvider):
         return bd(random.choice(self.ak)) if key == '' else key
 
     def getLanguages(self):
+        return [ 'it' ]
         languages = splitString(Env.setting('languages', section = 'core'))
         if len(languages):
             return languages
 
-        return [ 'en' ]
+        return [ 'it' ]
 
     def getTitles(self, movie):
         # add the title to the list
